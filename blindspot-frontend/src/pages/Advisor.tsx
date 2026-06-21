@@ -225,6 +225,23 @@ export function Advisor() {
         </p>
       </div>
 
+      {/* ── Warning when no analysis done yet ───────────────────────────── */}
+      {!result && (
+        <div className="flex gap-3 items-start bg-[#FFF8EF] border border-[#F0E2C9] rounded-xl px-4 py-3">
+          <span className="text-caution font-extrabold text-base shrink-0 mt-0.5">⚠</span>
+          <div>
+            <p className="text-sm font-bold text-on-surface">Run an analysis first</p>
+            <p className="text-xs text-on-surface-variant mt-0.5 leading-relaxed">
+              You haven't made a decision yet. Go to{" "}
+              <button onClick={() => navigate("/analyze")} className="text-primary font-semibold underline">
+                Analyze
+              </button>{" "}
+              first — the advisors below will be matched to your specific situation and score.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* ── General advisor cards ────────────────────────────────────────── */}
       <div className="grid gap-4">
         {sorted.map((a, idx) => {
