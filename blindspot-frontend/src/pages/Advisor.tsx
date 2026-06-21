@@ -3,6 +3,14 @@ import { Button } from "../components/ui/Button";
 import { getUserPersona } from "../utils/session";
 import { useNavigate } from "react-router-dom";
 
+const CONTACT_EMAIL = "advisors@blindspot.io";
+
+function mailtoLink(subject: string, body?: string) {
+  const s = encodeURIComponent(subject);
+  const b = body ? `&body=${encodeURIComponent(body)}` : "";
+  return `mailto:${CONTACT_EMAIL}?subject=${s}${b}`;
+}
+
 // ── Load last analysis from cache ─────────────────────────────────────────
 
 function loadLastAnalysis(): { payload: any; result: any } | null {
@@ -153,7 +161,7 @@ export function Advisor() {
                 </p>
               </div>
 
-              {/* Real office contacts from AXIS */}
+              {/* Contacts from AXIS — routed through our team email */}
               {officeContacts.length > 0 && (
                 <div className="space-y-2 pt-2 border-t border-red-200">
                   <p className="text-[10px] font-bold text-red-800 uppercase tracking-widest">
@@ -162,12 +170,13 @@ export function Advisor() {
                   {officeContacts.map((c, i) => (
                     <a
                       key={i}
-                      href={c.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={mailtoLink(
+                        `BlindSpot Advisor Request — ${c.name}`,
+                        `Hi BlindSpot team,\n\nI'd like to connect with: ${c.name}\n\nMy decision: ${payload?.decision_text ?? ""}\nMy Blindspot Score: ${result?.score} (${result?.grade})\n\nPlease get back to me.`
+                      )}
                       className="flex items-center gap-2 text-xs text-red-700 font-semibold underline hover:text-red-900"
                     >
-                      <span>↗</span> {c.name}
+                      <span>✉</span> {c.name}
                     </a>
                   ))}
                 </div>
@@ -252,13 +261,16 @@ export function Advisor() {
                   )}
                 </div>
                 <div className="shrink-0 self-start sm:pt-1">
-                  <Button
-                    variant={isRecommended ? "primary" : "secondary"}
-                    size="sm"
-                    onClick={() => alert(`Connecting you to ${a.title}…`)}
+                  <a
+                    href={mailtoLink(
+                      `BlindSpot — ${a.title} Request`,
+                      `Hi BlindSpot team,\n\nI'd like to connect with a ${a.title}.\n\n${result ? `My decision: ${payload?.decision_text ?? ""}\nMy Blindspot Score: ${result.score} (${result.grade})\n` : ""}Please get back to me.`
+                    )}
                   >
-                    {a.cta}
-                  </Button>
+                    <Button variant={isRecommended ? "primary" : "secondary"} size="sm">
+                      {a.cta}
+                    </Button>
+                  </a>
                 </div>
               </Card.Body>
             </Card>
