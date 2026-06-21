@@ -172,16 +172,17 @@ export function Advisor() {
                     Recommended Advisors for Your Situation
                   </p>
                   {officeContacts.map((c, i) => (
-                    <a
+                    <button
                       key={i}
-                      href={mailtoLink(
-                        `BlindSpot Advisor Request — ${c.name}`,
-                        `Hi BlindSpot team,\n\nI'd like to connect with: ${c.name}\n\nMy decision: ${payload?.decision_text ?? ""}\nMy Blindspot Score: ${result?.score} (${result?.grade})\n\nPlease get back to me.`
-                      )}
+                      onClick={() => {
+                        const subject = encodeURIComponent(`BlindSpot Advisor Request — ${c.name}`);
+                        const body = encodeURIComponent(`Hi BlindSpot team,\n\nI'd like to connect with: ${c.name}\n\nMy decision: ${payload?.decision_text ?? ""}\nMy Blindspot Score: ${result?.score} (${result?.grade})\n\nPlease get back to me.`);
+                        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+                      }}
                       className="flex items-center gap-2 text-xs text-red-700 font-semibold underline hover:text-red-900"
                     >
                       <span>✉</span> {c.name}
-                    </a>
+                    </button>
                   ))}
                 </div>
               )}
@@ -265,13 +266,17 @@ export function Advisor() {
                   )}
                 </div>
                 <div className="shrink-0 self-start sm:pt-1">
-                  <a
-                    href={`mailto:${a.email}?subject=${encodeURIComponent(`BlindSpot — ${a.title} Request`)}&body=${encodeURIComponent(`Hi BlindSpot team,\n\nI'd like to connect with a ${a.title}.\n\n${result ? `My decision: ${payload?.decision_text ?? ""}\nMy Blindspot Score: ${result.score} (${result.grade})\n` : ""}Please get back to me.`)}`}
+                  <Button
+                    variant={isRecommended ? "primary" : "secondary"}
+                    size="sm"
+                    onClick={() => {
+                      const subject = encodeURIComponent(`BlindSpot — ${a.title} Request`);
+                      const body = encodeURIComponent(`Hi BlindSpot team,\n\nI'd like to connect with a ${a.title}.\n\n${result ? `My decision: ${payload?.decision_text ?? ""}\nMy Blindspot Score: ${result.score} (${result.grade})\n` : ""}Please get back to me.`);
+                      window.location.href = `mailto:${a.email}?subject=${subject}&body=${body}`;
+                    }}
                   >
-                    <Button variant={isRecommended ? "primary" : "secondary"} size="sm">
-                      {a.cta}
-                    </Button>
-                  </a>
+                    {a.cta}
+                  </Button>
                 </div>
               </Card.Body>
             </Card>
