@@ -33,6 +33,7 @@ interface Advisor {
   description: string;
   stat?: { label: string; value: string };
   cta: string;
+  email: string;
 }
 
 const ADVISORS: Advisor[] = [
@@ -43,6 +44,7 @@ const ADVISORS: Advisor[] = [
     description:
       "Direct access to institutional placement officers. Best for validating tuition ROI and long-term career trajectory mappings based on current alumni data.",
     cta: "Schedule Consultation",
+    email: "education@blindspot.io",
   },
   {
     id: "finance",
@@ -52,6 +54,7 @@ const ADVISORS: Advisor[] = [
       "Specialized in mid-career pivot economics, equity compensation modelling, and net-worth projections across tax jurisdictions.",
     stat: { label: "Client Success Rate", value: "98%" },
     cta: "Request Quote",
+    email: "finance@blindspot.io",
   },
   {
     id: "relocation",
@@ -60,6 +63,7 @@ const ADVISORS: Advisor[] = [
     description:
       "Quantified cost-of-living adjustments and logistical risk assessments for international transitions, including visa timelines and housing market forecasts.",
     cta: "Connect Now",
+    email: "visa@blindspot.io",
   },
 ];
 
@@ -262,10 +266,7 @@ export function Advisor() {
                 </div>
                 <div className="shrink-0 self-start sm:pt-1">
                   <a
-                    href={mailtoLink(
-                      `BlindSpot — ${a.title} Request`,
-                      `Hi BlindSpot team,\n\nI'd like to connect with a ${a.title}.\n\n${result ? `My decision: ${payload?.decision_text ?? ""}\nMy Blindspot Score: ${result.score} (${result.grade})\n` : ""}Please get back to me.`
-                    )}
+                    href={`mailto:${a.email}?subject=${encodeURIComponent(`BlindSpot — ${a.title} Request`)}&body=${encodeURIComponent(`Hi BlindSpot team,\n\nI'd like to connect with a ${a.title}.\n\n${result ? `My decision: ${payload?.decision_text ?? ""}\nMy Blindspot Score: ${result.score} (${result.grade})\n` : ""}Please get back to me.`)}`}
                   >
                     <Button variant={isRecommended ? "primary" : "secondary"} size="sm">
                       {a.cta}
