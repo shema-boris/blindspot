@@ -5,12 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const CONTACT_EMAIL = "advisors@blindspot.io";
 
-function mailtoLink(subject: string, body?: string) {
-  const s = encodeURIComponent(subject);
-  const b = body ? `&body=${encodeURIComponent(body)}` : "";
-  return `mailto:${CONTACT_EMAIL}?subject=${s}${b}`;
-}
-
 // ── Load last analysis from cache ─────────────────────────────────────────
 
 function loadLastAnalysis(): { payload: any; result: any } | null {
